@@ -1,20 +1,13 @@
 package com.springsecurityjpa;
 
-import javax.security.auth.message.config.AuthConfigProvider;
-
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.HttpRequestHandler;
 
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -45,12 +38,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		.anyRequest().authenticated()
-		.and()
-		.formLogin().permitAll()
-		.and()
-		.logout().permitAll();
+        http.authorizeHttpRequests(requests -> requests
+        		.antMatchers("/admin").hasAuthority("ADMIN")
+                .anyRequest().authenticated())
+                .formLogin(login -> login.permitAll())
+                .logout(logout -> logout.permitAll());
+	
 	}
 
 //	public void configure(AuthenticationManagerBuilder auth) throws Exception {

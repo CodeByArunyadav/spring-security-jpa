@@ -6,8 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-//user namhm has role USER and password is codejava
-//user admin has role ADMIN with password is nimda.
+
 @Entity
 @Table(name="users")
 public class User {
